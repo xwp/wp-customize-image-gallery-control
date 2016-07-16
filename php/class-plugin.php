@@ -58,7 +58,6 @@ class Plugin {
 	 * @param \WP_Scripts $wp_scripts Scripts.
 	 */
 	public function register_scripts( \WP_Scripts $wp_scripts ) {
-
 		$handle = 'customize-image-gallery-control';
 		$src = plugins_url( 'js/customize-image-gallery-control.js', dirname( __FILE__ ) );
 		$deps = array( 'jquery', 'customize-controls' );
