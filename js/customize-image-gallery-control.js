@@ -60,7 +60,7 @@
          */
         initFrame: function() {
 
-            var control = this;
+            var control = this, preSelectImages;
 
             this.frame = wp.media({
                 button: {
@@ -78,13 +78,12 @@
             /**
              * Pre-select images according to saved settings.
              */
-            var preSelectImages = function() {
+            preSelectImages = function() {
                 var selection, ids, attachment;
                 selection = control.frame.state().get( 'selection' );
                 ids = control.setting.get();
                 ids.forEach( function( id ) {
                     attachment = wp.media.attachment( id );
-                    attachment.fetch();
                     selection.add ( attachment ? [ attachment ] : [] );
                 });
             };
