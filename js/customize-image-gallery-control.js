@@ -16,6 +16,12 @@
 
             args = options || {};
 
+            if ( ! args.params.labels ) {
+                args.params.labels = {};
+                args.params.labels.title = 'Select Gallery Images';
+                args.params.labels.select = 'Select Images';
+            }
+
             if ( ! args.params.type ) {
                 args.params.type = 'image_gallery';
             }
@@ -64,11 +70,11 @@
 
             this.frame = wp.media({
                 button: {
-                    text: 'Select'
+                    text: control.params.labels.select,
                 },
                 states: [
                     new wp.media.controller.Library({
-                        title: 'Select gallery images',
+                        title: control.params.labels.title,
                         library: wp.media.query({ type: 'image' }),
                         multiple: 'add'
                     })
@@ -102,7 +108,7 @@
             control.params.attachments = attachments;
 
             attachmentIds = control.getAttachmentIds( attachments );
-            
+
             // Set the Customizer setting; the callback takes care of rendering.
             control.setSettingValues( attachmentIds );
         },
