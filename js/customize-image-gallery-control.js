@@ -1,4 +1,6 @@
 /* global wp, JSON */
+/* eslint consistent-this: [ "error", "control" ] */
+/* eslint complexity: ["error", 8] */
 
 (function( api, $ ) {
     'use strict';
@@ -70,7 +72,7 @@
 
             this.frame = wp.media({
                 button: {
-                    text: control.params.labels.select,
+                    text: control.params.labels.select
                 },
                 states: [
                     new wp.media.controller.Library({
@@ -108,8 +110,6 @@
             control.params.attachments = attachments;
 
             attachmentIds = control.getAttachmentIds( attachments );
-
-            // Set the Customizer setting; the callback takes care of rendering.
             control.setSettingValues( attachmentIds );
         },
 
