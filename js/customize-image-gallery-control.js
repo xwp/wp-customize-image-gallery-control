@@ -84,13 +84,12 @@
                 ids = control.setting.get();
                 ids.forEach( function( id ) {
                     attachment = wp.media.attachment( id );
-                    selection.add ( attachment ? [ attachment ] : [] );
+                    selection.add( attachment ? [ attachment ] : [] );
                 });
             };
             control.frame.on( 'open', preSelectImages );
             control.frame.on( 'select', control.select );
         },
-
 
         /**
          * Callback for selecting attachments.
@@ -103,6 +102,7 @@
             control.params.attachments = attachments;
 
             attachmentIds = control.getAttachmentIds( attachments );
+            
             // Set the Customizer setting; the callback takes care of rendering.
             control.setSettingValues( attachmentIds );
         },
