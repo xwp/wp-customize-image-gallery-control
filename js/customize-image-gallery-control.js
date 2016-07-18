@@ -97,7 +97,7 @@
         /**
          * Open the media modal.
          */
-        openFrame: function() {
+        openFrame: function( event ) {
             event.preventDefault();
 
             if ( ! this.frame ) {
