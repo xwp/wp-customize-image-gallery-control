@@ -34,7 +34,6 @@ class Control extends \WP_Customize_Control {
 		$data = $this->json();
 		?>
 		<#
-		var postTypes = [];
 		_.defaults( data, <?php echo wp_json_encode( $data ) ?> );
 		data.input_id = 'input-' + String( Math.random() );
 		#>
