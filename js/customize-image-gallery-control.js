@@ -12,7 +12,7 @@
      */
     api.ImageGalleryControl = api.Control.extend({
         initialize: function( id, options ) {
-            var control = this, args, postTypes = [];
+            var control = this, args;
 
             args = options || {};
 
