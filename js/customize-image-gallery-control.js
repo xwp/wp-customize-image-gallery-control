@@ -33,6 +33,10 @@
                 args.params.content.attr( 'class', 'customize-control customize-control-' + args.params.type );
             }
 
+            if ( ! args.params.attachments ) {
+                args.params.attachments = [];
+            }
+
             api.Control.prototype.initialize.call( control, id, args );
         },
 
@@ -45,8 +49,49 @@
             // Shortcut so that we don't have to use _.bind every time we add a callback.
             _.bindAll( control, 'openFrame', 'select' );
 
+            /**
+             * Set gallery data and render content.
+             */
+            function setGalleryDataAndRenderContent() {
+
+                var value = control.setting.get();
+                control.setAttachmentsData( value ).done( function() {
+                    control.renderContent();
+                } );
+            }
+
+            // Ensure attachment data is initially set.
+            setGalleryDataAndRenderContent();
+
+            // Update the attachment data and re-render the control when the setting changes.
+            control.setting.bind( setGalleryDataAndRenderContent );
+
             // Bind events.
             control.container.on( 'click keydown', '.upload-button', control.openFrame );
+        },
+
+        /**
+         * Fetch attachment data for rendering in control content.
+         *
+         * @param {Array} value Setting value, array of attachment ids.
+         * @returns {*}
+         */
+        setAttachmentsData: function( value ) {
+            var control = this,
+                promises = [];
+
+            control.params.attachments = [];
+
+            _.each( value, function( id ) {
+                var hasAttachmentData = new $.Deferred();
+                wp.media.attachment( id ).fetch().done( function() {
+                    control.params.attachments.push( this.attributes );
+                    hasAttachmentData.resolve();
+                } );
+                promises.push( hasAttachmentData );
+            } );
+
+            return $.when.apply( undefined, promises ).promise();
         },
 
         /**
