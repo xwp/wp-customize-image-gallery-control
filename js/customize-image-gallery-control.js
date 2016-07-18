@@ -60,6 +60,8 @@
          */
         initFrame: function() {
 
+            var control = this;
+
             this.frame = wp.media({
                 button: {
                     text: 'Select'
@@ -73,21 +75,37 @@
                 ]
             });
 
-            // When files are selected, run a callback.
-            this.frame.on( 'select', this.select );
+            /**
+             * Pre-select images according to saved settings.
+             */
+            var preSelectImages = function() {
+                var selection, ids, attachment;
+                selection = control.frame.state().get( 'selection' );
+                ids = control.setting.get();
+                ids.forEach( function( id ) {
+                    attachment = wp.media.attachment( id );
+                    attachment.fetch();
+                    selection.add ( attachment ? [ attachment ] : [] );
+                });
+            };
+            control.frame.on( 'open', preSelectImages );
+            control.frame.on( 'select', control.select );
         },
+
 
         /**
          * Callback for selecting attachments.
          */
         select: function() {
-            var attachments = this.frame.state().get( 'selection' ).toJSON();
-            this.params.attachments = attachments;
 
-            var attachmentIds = this.getAttachmentIds( attachments );
-            console.log( attachmentIds );
+            var control = this, attachments, attachmentIds;
+
+            attachments = control.frame.state().get( 'selection' ).toJSON();
+            control.params.attachments = attachments;
+
+            attachmentIds = control.getAttachmentIds( attachments );
             // Set the Customizer setting; the callback takes care of rendering.
-            this.setSettingValues( attachmentIds );
+            control.setSettingValues( attachmentIds );
         },
 
         /**
@@ -97,9 +115,9 @@
          * @returns {Array}
          */
         getAttachmentIds: function( attachments ) {
-            var ids = [];
-            for ( var i in attachments ) {
-                ids.push( attachments[i].id );
+            var ids = [], i;
+            for ( i in attachments ) {
+                ids.push( attachments[ i ].id );
             }
             return ids;
         },
@@ -112,7 +130,7 @@
         setSettingValues: function( values ) {
             var control = this;
             control.setting.set( values );
-        },
+        }
     });
 
     api.controlConstructor['image_gallery'] = api.ImageGalleryControl;
