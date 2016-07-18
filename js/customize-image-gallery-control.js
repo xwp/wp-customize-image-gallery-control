@@ -132,12 +132,31 @@
              * Pre-select images according to saved settings.
              */
             preSelectImages = function() {
-                var selection, ids, attachment;
+                var selection, ids, attachment, library;
+
+                library = control.frame.state().get( 'library' );
                 selection = control.frame.state().get( 'selection' );
+
                 ids = control.setting.get();
+
+                // Sort the selected images to top when opening media modal.
+                library.comparator = function( a, b ) {
+                    var hasA = false !== this.mirroring.get( a.cid ),
+                        hasB = false !== this.mirroring.get( b.cid );
+
+                    if ( ! hasA && hasB ) {
+                        return -1;
+                    } else if ( hasA && ! hasB ) {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                };
+
                 ids.forEach( function( id ) {
                     attachment = wp.media.attachment( id );
                     selection.add( attachment ? [ attachment ] : [] );
+                    library.add( attachment ? [ attachment ] : [] );
                 });
             };
             control.frame.on( 'open', preSelectImages );
