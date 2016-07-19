@@ -141,8 +141,8 @@
 
                 // Sort the selected images to top when opening media modal.
                 library.comparator = function( a, b ) {
-                    var hasA = false !== this.mirroring.get( a.cid ),
-                        hasB = false !== this.mirroring.get( b.cid );
+                    var hasA = true === this.mirroring.get( a.cid ),
+                        hasB = true === this.mirroring.get( b.cid );
 
                     if ( ! hasA && hasB ) {
                         return -1;
@@ -200,6 +200,7 @@
             var control = this;
             control.setting.set( values );
         }
+
     });
 
     api.controlConstructor['image_gallery'] = api.ImageGalleryControl;
