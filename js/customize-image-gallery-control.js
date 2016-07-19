@@ -1,4 +1,6 @@
 /* global wp, JSON */
+/* eslint consistent-this: [ "error", "control" ] */
+/* eslint complexity: ["error", 8] */
 
 (function( api, $ ) {
     'use strict';
@@ -12,9 +14,13 @@
      */
     api.ImageGalleryControl = api.Control.extend({
         initialize: function( id, options ) {
-            var control = this, args, postTypes = [];
+            var control = this, args;
 
             args = options || {};
+
+            if ( ! args.params.file_type ) {
+                args.params.file_type = 'image';
+            }
 
             if ( ! args.params.type ) {
                 args.params.type = 'image_gallery';
@@ -35,12 +41,15 @@
         ready: function() {
             var control = this;
             // Shortcut so that we don't have to use _.bind every time we add a callback.
-            _.bindAll( control, 'openFrame' );
+            _.bindAll( control, 'openFrame', 'select' );
 
             // Bind events.
             control.container.on( 'click keydown', '.upload-button', control.openFrame );
         },
 
+        /**
+         * Open the media modal.
+         */
         openFrame: function() {
             event.preventDefault();
 
@@ -51,20 +60,79 @@
             this.frame.open();
         },
 
+        /**
+         * Initiate the media modal select frame.
+         * Save it for using later in case needed.
+         */
         initFrame: function() {
 
+            var control = this, preSelectImages;
             this.frame = wp.media({
+
                 button: {
-                    text: 'Select'
+                    text: control.params.button_labels.frame_button
                 },
                 states: [
                     new wp.media.controller.Library({
-                        title: 'Select gallery images',
-                        library: wp.media.query({ type: 'image' }),
+                        title: control.params.button_labels.frame_title,
+                        library: wp.media.query({ type: control.params.file_type }),
                         multiple: 'add'
                     })
                 ]
             });
+
+            /**
+             * Pre-select images according to saved settings.
+             */
+            preSelectImages = function() {
+                var selection, ids, attachment;
+                selection = control.frame.state().get( 'selection' );
+                ids = control.setting.get();
+                _.each( ids, function( id ) {
+                    attachment = wp.media.attachment( id );
+                    selection.add( attachment ? [ attachment ] : [] );
+                });
+            };
+            control.frame.on( 'open', preSelectImages );
+            control.frame.on( 'select', control.select );
+        },
+
+        /**
+         * Callback for selecting attachments.
+         */
+        select: function() {
+
+            var control = this, attachments, attachmentIds;
+
+            attachments = control.frame.state().get( 'selection' ).toJSON();
+            control.params.attachments = attachments;
+
+            attachmentIds = control.getAttachmentIds( attachments );
+            control.setSettingValues( attachmentIds );
+        },
+
+        /**
+         * Get array of attachment id-s from attachment objects.
+         *
+         * @param {Array} attachments Attachments.
+         * @returns {Array}
+         */
+        getAttachmentIds: function( attachments ) {
+            var ids = [], i;
+            for ( i in attachments ) {
+                ids.push( attachments[ i ].id );
+            }
+            return ids;
+        },
+
+        /**
+         * Set setting values.
+         *
+         * @param {Array} values Array of ids.
+         */
+        setSettingValues: function( values ) {
+            var control = this;
+            control.setting.set( values );
         }
     });
 
