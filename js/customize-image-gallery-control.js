@@ -18,10 +18,8 @@
 
             args = options || {};
 
-            if ( ! args.params.labels ) {
-                args.params.labels = {};
-                args.params.labels.title = 'Select Gallery Images';
-                args.params.labels.select = 'Select Images';
+            if ( ! args.params.file_type ) {
+                args.params.file_type = 'image';
             }
 
             if ( ! args.params.type ) {
@@ -114,15 +112,15 @@
         initFrame: function() {
 
             var control = this, preSelectImages;
-
             this.frame = wp.media({
+
                 button: {
-                    text: control.params.labels.select
+                    text: control.params.button_labels.frame_button
                 },
                 states: [
                     new wp.media.controller.Library({
-                        title: control.params.labels.title,
-                        library: wp.media.query({ type: 'image' }),
+                        title: control.params.button_labels.frame_title,
+                        library: wp.media.query({ type: control.params.file_type }),
                         multiple: 'add'
                     })
                 ]
@@ -153,7 +151,7 @@
                     }
                 };
 
-                ids.forEach( function( id ) {
+                _.each( ids, function( id ) {
                     attachment = wp.media.attachment( id );
                     selection.add( attachment ? [ attachment ] : [] );
                     library.add( attachment ? [ attachment ] : [] );
