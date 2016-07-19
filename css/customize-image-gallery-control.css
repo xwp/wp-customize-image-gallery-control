@@ -1,17 +1,19 @@
 .image-gallery-attachments {
     background: #fff;
-    padding: 3px;
     float: left;
     clear: both;
 }
 
 .image-gallery-thumbnail-wrapper {
     float: left;
-    width: 45%;
-    height: 90px;
+    width: 19%;
+    height: 45px;
+    padding: 0.2%;
+    overflow: hidden;
 }
 
 .image-gallery-thumbnail-wrapper img {
-    max-height: 100%;
-    max-width: 100%;
+    height: auto;
+    width: 100%;
+    float: left;
 }
