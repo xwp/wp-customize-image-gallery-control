@@ -7,9 +7,16 @@
 
 namespace CustomizeImageGalleryControl;
 
+/**
+ * Class Test_Customize_Image_Gallery_Control
+ *
+ * @package CustomizeImageGalleryControl
+ */
 class Test_Customize_Image_Gallery_Control extends \WP_UnitTestCase {
 
 	/**
+	 * Test PHP version error.
+	 *
 	 * @see Test_Customize_Image_Gallery_Control::customize_
 	 */
 	function test_customize_image_gallery_control_php_version_error() {
@@ -20,6 +27,8 @@ class Test_Customize_Image_Gallery_Control extends \WP_UnitTestCase {
 	}
 
 	/**
+	 * Test PHP version error text.
+	 *
 	 * @see customize_snapshots_php_version_text()
 	 */
 	function test_customize_image_gallery_control_php_version_text() {

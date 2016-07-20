@@ -9,6 +9,7 @@ namespace CustomizeImageGalleryControl;
 
 /**
  * Class Test_Control
+ *
  * @package CustomizeImageGalleryControl
  */
 class Test_Control extends \WP_UnitTestCase {
@@ -45,5 +46,4 @@ class Test_Control extends \WP_UnitTestCase {
 		$this->assertTrue( 'image_gallery' === $control->type );
 		$this->assertTrue( 'image' === $control->file_type );
 	}
-
 }

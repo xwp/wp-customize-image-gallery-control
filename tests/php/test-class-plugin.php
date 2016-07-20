@@ -9,6 +9,7 @@ namespace CustomizeImageGalleryControl;
 
 /**
  * Class Test_Plugin
+ *
  * @package CustomizeImageGalleryControl
  */
 class Test_Plugin extends \WP_UnitTestCase {
@@ -27,5 +28,4 @@ class Test_Plugin extends \WP_UnitTestCase {
 		$this->assertEquals( 9, has_action( 'customize_register', array( $plugin, 'customize_register' ) ) );
 		$this->assertEquals( 10, has_action( 'customize_controls_enqueue_scripts', array( $plugin, 'customize_controls_enqueue_scripts' ) ) );
 	}
-
 }
