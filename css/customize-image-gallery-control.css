@@ -1,0 +1,19 @@
+.image-gallery-attachments {
+    background: #fff;
+    float: left;
+    clear: both;
+}
+
+.image-gallery-thumbnail-wrapper {
+    float: left;
+    width: 19%;
+    height: 45px;
+    padding: 0.5%;
+    overflow: hidden;
+}
+
+.image-gallery-thumbnail-wrapper img {
+    height: auto;
+    width: 100%;
+    float: left;
+}

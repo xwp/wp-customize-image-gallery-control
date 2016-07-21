@@ -37,6 +37,7 @@ class Plugin {
 	 */
 	function init() {
 
+		add_action( 'wp_default_styles', array( $this, 'register_styles' ), 100 );
 		add_action( 'wp_default_scripts', array( $this, 'register_scripts' ), 100 );
 		add_action( 'customize_register', array( $this, 'customize_register' ), 9 );
 		add_action( 'customize_controls_enqueue_scripts', array( $this, 'customize_controls_enqueue_scripts' ) );
@@ -50,6 +51,19 @@ class Plugin {
 	function customize_register( \WP_Customize_Manager $wp_customize ) {
 		require_once __DIR__ . '/class-control.php';
 		$wp_customize->register_control_type( __NAMESPACE__ . '\\Control' );
+	}
+
+	/**
+	 * Register styles.
+	 *
+	 * @param \WP_Styles $wp_styles Styles.
+	 */
+	public function register_styles( \WP_Styles $wp_styles ) {
+
+		$handle = 'customize-image-gallery-control';
+		$src = plugins_url( 'css/customize-image-gallery-control.css', dirname( __FILE__ ) );
+		$deps = array( 'customize-controls' );
+		$wp_styles->add( $handle, $src, $deps, $this->version );
 	}
 
 	/**
@@ -70,5 +84,6 @@ class Plugin {
 	 */
 	public function customize_controls_enqueue_scripts() {
 		wp_enqueue_script( 'customize-image-gallery-control' );
+		wp_enqueue_style( 'customize-image-gallery-control' );
 	}
 }
