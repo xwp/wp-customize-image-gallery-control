@@ -54,6 +54,16 @@
 
                 var value = control.setting.get();
                 control.setAttachmentsData( value ).done( function() {
+                    function idComparator( a, b ) {
+                        if ( a.id < b.id ) {
+                            return 1
+                        } else if ( a.id > b.id ) {
+                            return -1;
+                        } else {
+                            return 0;
+                        }
+                    }
+                    control.params.attachments.sort( idComparator );
                     control.renderContent();
                 } );
             }
