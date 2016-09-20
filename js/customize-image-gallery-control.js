@@ -56,7 +56,7 @@
                 control.setAttachmentsData( value ).done( function() {
                     function idComparator( a, b ) {
                         if ( a.id < b.id ) {
-                            return 1
+                            return 1;
                         } else if ( a.id > b.id ) {
                             return -1;
                         } else {
