@@ -54,17 +54,8 @@
 
                 var value = control.setting.get();
                 control.setAttachmentsData( value ).done( function() {
-                    function idComparator( a, b ) {
-                        if ( a.id < b.id ) {
-                            return 1;
-                        } else if ( a.id > b.id ) {
-                            return -1;
-                        } else {
-                            return 0;
-                        }
-                    }
-                    control.params.attachments.sort( idComparator );
                     control.renderContent();
+                    control.setupSortable();
                 } );
             }
 
@@ -90,10 +81,10 @@
 
             control.params.attachments = [];
 
-            _.each( value, function( id ) {
+            _.each( value, function( id, index ) {
                 var hasAttachmentData = new $.Deferred();
                 wp.media.attachment( id ).fetch().done( function() {
-                    control.params.attachments.push( this.attributes );
+                    control.params.attachments[ index ] = this.attributes;
                     hasAttachmentData.resolve();
                 } );
                 promises.push( hasAttachmentData );
@@ -207,6 +198,29 @@
         setSettingValues: function( values ) {
             var control = this;
             control.setting.set( values );
+        },
+
+        /**
+         * Setup sortable.
+         *
+         * @returns {void}
+         */
+        setupSortable: function() {
+            var control = this,
+                list = $( '.image-gallery-attachments' );
+            list.sortable({
+                items: '.image-gallery-thumbnail-wrapper',
+                tolerance: 'pointer',
+                stop: function() {
+                    var selectedValues = [];
+                    list.find( '.image-gallery-thumbnail-wrapper' ).each( function() {
+                        var id;
+                        id = parseInt( $( this ).data( 'postId' ), 10 );
+                        selectedValues.push( id );
+                    } );
+                    control.setSettingValues( selectedValues );
+                }
+            });
         }
 
     });

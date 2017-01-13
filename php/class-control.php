@@ -77,7 +77,7 @@ class Control extends \WP_Customize_Control {
 		<# if ( data.attachments ) { #>
 			<div class="image-gallery-attachments">
 				<# _.each( data.attachments, function( attachment ) { #>
-					<div class="image-gallery-thumbnail-wrapper">
+					<div class="image-gallery-thumbnail-wrapper" data-post-id="{{ attachment.id }}">
 						<img class="attachment-thumb" src="{{ attachment.url }}" draggable="false" alt="" />
 					</div>
 				<#	} ) #>
