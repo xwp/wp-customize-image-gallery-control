@@ -74,16 +74,19 @@ class Control extends \WP_Customize_Control {
 		data.input_id = 'input-' + String( Math.random() );
 		#>
 			<span class="customize-control-title"><label for="{{ data.input_id }}">{{ data.label }}</label></span>
-		<# if ( data.attachments ) { #>
-			<div class="image-gallery-attachments">
-				<# _.each( data.attachments, function( attachment ) { #>
-					<div class="image-gallery-thumbnail-wrapper" data-post-id="{{ attachment.id }}">
-						<img class="attachment-thumb" src="{{ attachment.url }}" draggable="false" alt="" />
-					</div>
-				<#	} ) #>
-			</div>
+			<# if ( data.attachments.length > 0 ) { #>
+				<div class="image-gallery-attachments">
+					<# _.each( data.attachments, function( attachment ) { #>
+						<div class="image-gallery-thumbnail-wrapper" data-post-id="{{ attachment.id }}">
+							<img class="attachment-thumb" src="{{ attachment.url }}" draggable="false" alt="" />
+						</div>
+					<#	} ) #>
+				</div>
 			<# } #>
 			<div>
+				<# if ( data.attachments.length > 0 ) { #>
+					<button type="button" class="button remove-button" id="image-gallery-remove-gallery">{{ data.button_labels.remove }}</button>
+				<# } #>
 				<button type="button" class="button upload-button" id="image-gallery-modify-gallery">{{ data.button_labels.change }}</button>
 			</div>
 			<div class="customize-control-notifications"></div>
