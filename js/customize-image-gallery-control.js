@@ -207,7 +207,7 @@
          */
         setupSortable: function() {
             var control = this,
-                list = $( '.image-gallery-attachments' );
+                list = $(this.container).find( '.image-gallery-attachments' );
             list.sortable({
                 items: '.image-gallery-thumbnail-wrapper',
                 tolerance: 'pointer',
